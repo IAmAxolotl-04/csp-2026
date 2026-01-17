@@ -1,0 +1,26 @@
+﻿{
+  "manifest_version": 3,
+  "name": "Password Smoke Detector",
+  "version": "2026.1.17",
+  "description": "Warns when passwords are dangerous. Like a smoke detector for your logins.",
+  "permissions": ["activeTab", "storage"],
+  "action": {
+    "default_popup": "popup/index.html",
+    "default_icon": {
+      "16": "icons/shield-16.png",
+      "48": "icons/shield-48.png",
+      "128": "icons/shield-128.png"
+    }
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["scripts/content.js"],
+    "run_at": "document_idle"
+  }],
+  "icons": {
+    "16": "icons/shield-16.png",
+    "48": "icons/shield-48.png",
+    "128": "icons/shield-128.png"
+  },
+  "homepage_url": "https://credentialprivacy.org"
+}
