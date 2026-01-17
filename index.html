@@ -1,0 +1,519 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Password Analyzer | CSP 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a14;
+            color: #00f3ff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 2.8rem;
+            background: linear-gradient(90deg, #00f3ff, #b967ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .timestamp {
+            color: #00ff9d;
+            font-size: 0.9rem;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: rgba(16, 16, 32, 0.9);
+            border: 1px solid #00f3ff;
+            padding: 25px;
+            border-radius: 8px;
+        }
+
+        .panel-title {
+            color: #00f3ff;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #00f3ff;
+            padding-bottom: 10px;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00f3ff;
+            color: #00ff9d;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .test-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .test-btn {
+            padding: 12px 20px;
+            background: transparent;
+            border: 2px solid;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .btn-breached {
+            border-color: #ff2a6d;
+            color: #ff2a6d;
+        }
+
+        .btn-weak {
+            border-color: #ff9d00;
+            color: #ff9d00;
+        }
+
+        .btn-strong {
+            border-color: #00ff9d;
+            color: #00ff9d;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(#00ff9d 0deg, rgba(255,255,255,0.1) 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+        }
+
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00ff9d;
+        }
+
+        .metrics {
+            margin: 20px 0;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .status {
+            display: inline-block;
+            padding: 10px 20px;
+            border: 2px solid;
+            font-weight: bold;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .status-breached {
+            border-color: #ff2a6d;
+            color: #ff2a6d;
+            background: rgba(255, 42, 109, 0.1);
+        }
+
+        .status-weak {
+            border-color: #ff9d00;
+            color: #ff9d00;
+            background: rgba(255, 157, 0, 0.1);
+        }
+
+        .status-strong {
+            border-color: #00ff9d;
+            color: #00ff9d;
+            background: rgba(0, 255, 157, 0.1);
+        }
+
+        .terminal {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            border-radius: 4px;
+        }
+
+        .terminal-line {
+            margin-bottom: 5px;
+        }
+
+        .prompt {
+            color: #00ff9d;
+        }
+
+        .command {
+            color: #00f3ff;
+        }
+
+        .output {
+            color: #ccc;
+        }
+
+        .error {
+            color: #ff2a6d;
+        }
+
+        .success {
+            color: #00ff9d;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid rgba(0, 243, 255, 0.3);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="title">🧠 Neural Password Analyzer</h1>
+        <div class="subtitle">Credential Shield Protocol v2026.2</div>
+        <div class="timestamp" id="timestamp">Loading...</div>
+    </div>
+
+    <div class="main-container">
+        <!-- Left Panel: Analysis -->
+        <div class="panel">
+            <div class="panel-title">Password Analysis</div>
+            
+            <input type="password" id="passwordInput" class="password-input" placeholder="Enter password to analyze" autocomplete="off">
+            
+            <div class="test-buttons">
+                <button class="test-btn btn-breached" onclick="testPassword('password123')">Test Breached</button>
+                <button class="test-btn btn-weak" onclick="testPassword('123456')">Test Weak</button>
+                <button class="test-btn btn-strong" onclick="testPassword('Neuro$ecure2026!')">Test Strong</button>
+            </div>
+            
+            <div id="analysisResults">
+                <div class="status" id="statusIndicator">AWAITING INPUT</div>
+                
+                <div class="score-circle" id="scoreCircle">
+                    <div class="score-value" id="scoreValue">0</div>
+                </div>
+                
+                <div class="metrics">
+                    <div class="metric-row">
+                        <span>Estimated Entropy:</span>
+                        <span id="entropyValue" style="color: #00ff9d;">0 bits</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>Time to Crack:</span>
+                        <span id="crackTime" style="color: #ff9d00;">--</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>Password Length:</span>
+                        <span id="lengthValue">0</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>Processing:</span>
+                        <span style="color: #00ff9d;">100% Local</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Panel: Terminal -->
+        <div class="panel">
+            <div class="panel-title">System Terminal</div>
+            <div class="terminal" id="terminal">
+                <div class="terminal-line"><span class="prompt">root@neural-analyzer:~$</span> <span class="command">system.init --protocol=csp-2026</span></div>
+                <div class="terminal-line output">> Initializing Credential Shield Protocol...</div>
+                <div class="terminal-line output">> Loading neural security algorithms...</div>
+                <div class="terminal-line success">> ✓ Security core: ONLINE</div>
+                <div class="terminal-line success">> ✓ Privacy shields: ENGAGED</div>
+                <div class="terminal-line output">> Local processing: ENABLED</div>
+                <div class="terminal-line output">> Ready for password analysis.</div>
+                <div class="terminal-line"><span class="prompt">root@neural-analyzer:~$</span> <span class="command" id="currentCommand">awaiting_input</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div style="margin-bottom: 15px;">
+            <strong style="color: #00f3ff;">Credential Shield Protocol</strong> · Est. January 2026
+        </div>
+        <div>
+            🔐 Privacy by Default · 🧠 Local Processing · 🛡️ Zero-Knowledge
+        </div>
+    </div>
+
+    <script>
+        // Breach database
+        const breachedPasswords = [
+            'password123', '123456', 'password', 'admin', 'welcome',
+            'qwerty', 'letmein', 'dragon', 'baseball', 'football',
+            'monkey', '123456789', '12345678', '12345', '1234567'
+        ];
+        
+        // Update timestamp
+        function updateTimestamp() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString();
+            document.getElementById('timestamp').textContent = `System Time: ${timeStr}`;
+        }
+        
+        // Calculate password analysis
+        function analyzePassword(password) {
+            if (!password) return null;
+            
+            // Check if breached
+            const isBreached = breachedPasswords.includes(password.toLowerCase());
+            
+            // Character analysis
+            const hasLower = /[a-z]/.test(password);
+            const hasUpper = /[A-Z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
+            const hasSpecial = /[^A-Za-z0-9]/.test(password);
+            
+            // Calculate character pool size
+            let poolSize = 0;
+            if (hasLower) poolSize += 26;
+            if (hasUpper) poolSize += 26;
+            if (hasNumber) poolSize += 10;
+            if (hasSpecial) poolSize += 32;
+            
+            // Calculate entropy (bits)
+            const entropy = Math.round(Math.log2(Math.pow(poolSize || 1, password.length)));
+            
+            // Calculate security score (0-100)
+            let score = 0;
+            
+            // Length scoring
+            if (password.length >= 16) score += 40;
+            else if (password.length >= 12) score += 30;
+            else if (password.length >= 8) score += 15;
+            else score += 5;
+            
+            // Character diversity scoring
+            if (hasLower) score += 10;
+            if (hasUpper) score += 10;
+            if (hasNumber) score += 10;
+            if (hasSpecial) score += 15;
+            
+            // Penalties for bad patterns
+            if (/^(123|abc|qwerty)/i.test(password)) score -= 20;
+            
+            // Breach penalty
+            if (isBreached) score = Math.max(0, score - 50);
+            
+            // Clamp score between 0-100
+            score = Math.max(0, Math.min(100, Math.round(score)));
+            
+            // Determine time to crack
+            let crackTime;
+            if (entropy < 40) crackTime = "Instant";
+            else if (entropy < 50) crackTime = "Minutes";
+            else if (entropy < 60) crackTime = "Hours";
+            else if (entropy < 70) crackTime = "Days";
+            else if (entropy < 80) crackTime = "Years";
+            else crackTime = "Centuries";
+            
+            // Determine status
+            let status, statusClass;
+            if (isBreached) {
+                status = "🚨 BREACHED PASSWORD";
+                statusClass = "status-breached";
+            } else if (score < 40) {
+                status = "⚠️ WEAK PASSWORD";
+                statusClass = "status-weak";
+            } else if (score < 70) {
+                status = "🟡 MODERATE PASSWORD";
+                statusClass = "status-weak"; // Using same style for moderate
+            } else {
+                status = "✅ STRONG PASSWORD";
+                statusClass = "status-strong";
+            }
+            
+            return {
+                isBreached: isBreached,
+                score: score,
+                entropy: entropy,
+                crackTime: crackTime,
+                status: status,
+                statusClass: statusClass,
+                length: password.length,
+                hasLower: hasLower,
+                hasUpper: hasUpper,
+                hasNumber: hasNumber,
+                hasSpecial: hasSpecial
+            };
+        }
+        
+        // Update UI with results
+        function updateUI(result) {
+            // Update score circle
+            document.getElementById('scoreValue').textContent = result.score;
+            const scoreCircle = document.getElementById('scoreCircle');
+            const degrees = result.score * 3.6;
+            scoreCircle.style.background = `conic-gradient(#00ff9d 0deg, #00ff9d ${degrees}deg, rgba(255,255,255,0.1) ${degrees}deg, rgba(255,255,255,0.1) 360deg)`;
+            
+            // Update status
+            const statusIndicator = document.getElementById('statusIndicator');
+            statusIndicator.textContent = result.status;
+            statusIndicator.className = `status ${result.statusClass}`;
+            
+            // Update metrics
+            document.getElementById('entropyValue').textContent = `${result.entropy} bits`;
+            document.getElementById('crackTime').textContent = result.crackTime;
+            document.getElementById('lengthValue').textContent = result.length;
+            
+            // Update terminal
+            updateTerminal(result);
+        }
+        
+        // Update terminal output
+        function updateTerminal(result) {
+            const terminal = document.getElementById('terminal');
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString();
+            
+            let terminalHTML = terminal.innerHTML;
+            
+            terminalHTML += `
+                <div class="terminal-line"><span class="prompt">root@neural-analyzer:~$</span> <span class="command">analyze.password</span></div>
+                <div class="terminal-line output">> Analysis started at ${timeStr}</div>
+                <div class="terminal-line output">> Password length: ${result.length} characters</div>
+                <div class="terminal-line output">> Character sets: ${result.hasLower ? 'lowercase ' : ''}${result.hasUpper ? 'uppercase ' : ''}${result.hasNumber ? 'numbers ' : ''}${result.hasSpecial ? 'special' : ''}</div>
+                <div class="terminal-line output">> Estimated entropy: ${result.entropy} bits</div>
+            `;
+            
+            if (result.isBreached) {
+                terminalHTML += `
+                    <div class="terminal-line error">> ⚠️ SECURITY BREACH DETECTED</div>
+                    <div class="terminal-line error">> Password found in breach database</div>
+                    <div class="terminal-line error">> Immediate change recommended</div>
+                `;
+            } else if (result.score < 40) {
+                terminalHTML += `
+                    <div class="terminal-line error">> ⚠️ WEAK PASSWORD</div>
+                    <div class="terminal-line output">> Security score: ${result.score}/100 (LOW)</div>
+                    <div class="terminal-line output">> Suggestion: Use 12+ characters with mixed character sets</div>
+                `;
+            } else if (result.score < 70) {
+                terminalHTML += `
+                    <div class="terminal-line output">> ✓ Moderate security</div>
+                    <div class="terminal-line output">> Security score: ${result.score}/100</div>
+                `;
+            } else {
+                terminalHTML += `
+                    <div class="terminal-line success">> ✓ OPTIMAL SECURITY</div>
+                    <div class="terminal-line success">> Security score: ${result.score}/100 (EXCELLENT)</div>
+                    <div class="terminal-line success">> Estimated crack time: ${result.crackTime}</div>
+                `;
+            }
+            
+            terminalHTML += `
+                <div class="terminal-line output">> Processing complete. All data remains local.</div>
+                <div class="terminal-line"><span class="prompt">root@neural-analyzer:~$</span> <span class="command">ready</span></div>
+            `;
+            
+            terminal.innerHTML = terminalHTML;
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+        
+        // Test password function
+        function testPassword(password) {
+            document.getElementById('passwordInput').value = password;
+            analyzeAndDisplay();
+        }
+        
+        // Main analysis function
+        function analyzeAndDisplay() {
+            const password = document.getElementById('passwordInput').value;
+            
+            if (!password) {
+                // Reset display
+                document.getElementById('scoreValue').textContent = '0';
+                document.getElementById('scoreCircle').style.background = 'conic-gradient(#00ff9d 0deg, rgba(255,255,255,0.1) 0deg)';
+                document.getElementById('statusIndicator').textContent = 'AWAITING INPUT';
+                document.getElementById('statusIndicator').className = 'status';
+                document.getElementById('entropyValue').textContent = '0 bits';
+                document.getElementById('crackTime').textContent = '--';
+                document.getElementById('lengthValue').textContent = '0';
+                return;
+            }
+            
+            // Show analyzing state
+            document.getElementById('statusIndicator').textContent = 'ANALYZING...';
+            document.getElementById('statusIndicator').className = 'status status-weak';
+            
+            // Simulate processing delay
+            setTimeout(() => {
+                const result = analyzePassword(password);
+                updateUI(result);
+            }, 500);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update timestamp every second
+            updateTimestamp();
+            setInterval(updateTimestamp, 1000);
+            
+            // Set up password input listener
+            document.getElementById('passwordInput').addEventListener('input', analyzeAndDisplay);
+            
+            // Focus the password input
+            document.getElementById('passwordInput').focus();
+            
+            console.log('Neural Password Analyzer initialized');
+        });
+    </script>
+</body>
+</html>
