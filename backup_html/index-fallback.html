@@ -1,0 +1,83 @@
+﻿# FIX-GITHUB-PAGES.ps1
+Write-Host "🔧 Enabling GitHub Pages..." -ForegroundColor Cyan
+
+$username = "IAmAxolotl-04"
+$repo = "password-smoke-detector"
+
+Write-Host "`n1. OPEN GITHUB SETTINGS:" -ForegroundColor Yellow
+$pagesURL = "https://github.com/$username/$repo/settings/pages"
+Write-Host "   $pagesURL" -ForegroundColor White
+Start-Process $pagesURL
+
+Write-Host "`n2. CONFIGURE THESE SETTINGS:" -ForegroundColor Yellow
+Write-Host "   Source: 'Deploy from a branch'" -ForegroundColor White
+Write-Host "   Branch: 'master'" -ForegroundColor White
+Write-Host "   Folder: '/website' (not root!)" -ForegroundColor White
+Write-Host "   Click: Save" -ForegroundColor White
+
+Write-Host "`n3. WAIT 1-2 MINUTES for deployment" -ForegroundColor Yellow
+Write-Host "   (Refresh the page to see status)" -ForegroundColor Gray
+
+Write-Host "`n4. TEST YOUR LINK:" -ForegroundColor Yellow
+$demoURL = "https://$username.github.io/$repo/website/neural-demo.html"
+Write-Host "   $demoURL" -ForegroundColor White
+
+Write-Host "`n🎯 QUICK ALTERNATIVE WHILE WAITING:" -ForegroundColor Green
+Write-Host "   Use this raw file link that works NOW:" -ForegroundColor White
+$rawURL = "https://raw.githack.com/$username/$repo/master/website/neural-demo.html"
+Write-Host "   $rawURL" -ForegroundColor White
+Set-Clipboard $rawURL
+Write-Host "   ✅ Copied to clipboard!" -ForegroundColor Green
+
+# Create alternative hosting option
+Write-Host "`n🚀 EMERGENCY HOSTING (If GitHub Pages fails):" -ForegroundColor Cyan
+@'
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Neural Password Analyzer - CSP 2026</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Neural Password Analyzer</h1>
+        <p>Our demo is currently being deployed to GitHub Pages.</p>
+        <p>Try these alternative links:</p>
+        <a href="https://raw.githack.com/IAmAxolotl-04/password-smoke-detector/master/website/neural-demo.html" class="button">
+            🚀 View Demo (Raw Git Link)
+        </a>
+        <br>
+        <a href="https://github.com/IAmAxolotl-04/password-smoke-detector" class="button">
+            📁 View Source Code
+        </a>
+        <p style="margin-top: 30px; color: #666;">
+            GitHub Pages deployment takes 1-2 minutes after configuration.
+        </p>
+    </div>
+</body>
+</html>

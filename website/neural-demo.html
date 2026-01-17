@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -220,9 +220,48 @@
         }
     </style>
 </head>
-<body>
+<body><nav class="cyber-nav">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="website/neural-demo.html">Neural Demo</a></li>
+    <li><a href="website/index-fallback.html">Fallback</a></li>
+  </ul>
+</nav>
+
+<style>
+.cyber-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(16,16,32,0.9);
+    border-bottom: 1px solid #00f3ff;
+    z-index: 999;
+    font-family: 'Courier New', monospace;
+}
+.cyber-nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 15px 0;
+    margin: 0;
+}
+.cyber-nav a {
+    color: #00f3ff;
+    text-decoration: none;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+.cyber-nav a:hover {
+    color: #00ff9d;
+    text-shadow: 0 0 10px #00ff9d;
+}
+body { padding-top: 60px; } /* prevent content under nav */
+</style>
     <div class="header">
-        <h1 class="title">🧠 Neural Password Analyzer</h1>
+        <h1 class="title">?? Neural Password Analyzer</h1>
         <div class="subtitle">Credential Shield Protocol v2026.2</div>
         <div class="timestamp" id="timestamp">Loading...</div>
     </div>
@@ -275,8 +314,8 @@
                 <div class="terminal-line"><span class="prompt">root@neural-analyzer:~$</span> <span class="command">system.init --protocol=csp-2026</span></div>
                 <div class="terminal-line output">> Initializing Credential Shield Protocol...</div>
                 <div class="terminal-line output">> Loading neural security algorithms...</div>
-                <div class="terminal-line success">> ✓ Security core: ONLINE</div>
-                <div class="terminal-line success">> ✓ Privacy shields: ENGAGED</div>
+                <div class="terminal-line success">> ? Security core: ONLINE</div>
+                <div class="terminal-line success">> ? Privacy shields: ENGAGED</div>
                 <div class="terminal-line output">> Local processing: ENABLED</div>
                 <div class="terminal-line output">> Ready for password analysis.</div>
                 <div class="terminal-line"><span class="prompt">root@neural-analyzer:~$</span> <span class="command" id="currentCommand">awaiting_input</span></div>
@@ -286,10 +325,10 @@
 
     <div class="footer">
         <div style="margin-bottom: 15px;">
-            <strong style="color: #00f3ff;">Credential Shield Protocol</strong> · Est. January 2026
+            <strong style="color: #00f3ff;">Credential Shield Protocol</strong> � Est. January 2026
         </div>
         <div>
-            🔐 Privacy by Default · 🧠 Local Processing · 🛡️ Zero-Knowledge
+            ?? Privacy by Default � ?? Local Processing � ??? Zero-Knowledge
         </div>
     </div>
 
@@ -367,16 +406,16 @@
             // Determine status
             let status, statusClass;
             if (isBreached) {
-                status = "🚨 BREACHED PASSWORD";
+                status = "?? BREACHED PASSWORD";
                 statusClass = "status-breached";
             } else if (score < 40) {
-                status = "⚠️ WEAK PASSWORD";
+                status = "?? WEAK PASSWORD";
                 statusClass = "status-weak";
             } else if (score < 70) {
-                status = "🟡 MODERATE PASSWORD";
+                status = "?? MODERATE PASSWORD";
                 statusClass = "status-weak"; // Using same style for moderate
             } else {
-                status = "✅ STRONG PASSWORD";
+                status = "? STRONG PASSWORD";
                 statusClass = "status-strong";
             }
             
@@ -435,24 +474,24 @@
             
             if (result.isBreached) {
                 terminalHTML += `
-                    <div class="terminal-line error">> ⚠️ SECURITY BREACH DETECTED</div>
+                    <div class="terminal-line error">> ?? SECURITY BREACH DETECTED</div>
                     <div class="terminal-line error">> Password found in breach database</div>
                     <div class="terminal-line error">> Immediate change recommended</div>
                 `;
             } else if (result.score < 40) {
                 terminalHTML += `
-                    <div class="terminal-line error">> ⚠️ WEAK PASSWORD</div>
+                    <div class="terminal-line error">> ?? WEAK PASSWORD</div>
                     <div class="terminal-line output">> Security score: ${result.score}/100 (LOW)</div>
                     <div class="terminal-line output">> Suggestion: Use 12+ characters with mixed character sets</div>
                 `;
             } else if (result.score < 70) {
                 terminalHTML += `
-                    <div class="terminal-line output">> ✓ Moderate security</div>
+                    <div class="terminal-line output">> ? Moderate security</div>
                     <div class="terminal-line output">> Security score: ${result.score}/100</div>
                 `;
             } else {
                 terminalHTML += `
-                    <div class="terminal-line success">> ✓ OPTIMAL SECURITY</div>
+                    <div class="terminal-line success">> ? OPTIMAL SECURITY</div>
                     <div class="terminal-line success">> Security score: ${result.score}/100 (EXCELLENT)</div>
                     <div class="terminal-line success">> Estimated crack time: ${result.crackTime}</div>
                 `;
