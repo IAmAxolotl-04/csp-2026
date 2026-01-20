@@ -21,3 +21,7 @@ Create a 'Password Smoke Detector' browser extension that checks password safety
 ### Contact
 Starting transparent from Day 1.
 
+
+## 🚀 Live Demo
+
+[![GitHub Pages](https://img.shields.io/badge/Live_Demo-Available-success)](https://iamaxolotl-04.github.io/password-smoke-detector/)
