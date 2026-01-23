@@ -1,0 +1,34 @@
+﻿{
+  "name": "credential-shield-protocol",
+  "version": "1.0.0-draft",
+  "description": "Privacy-preserving protocol for password breach checking",
+  "main": "protocol/core/hasher.js",
+  "scripts": {
+    "test": "node quick-test.js"
+  },
+  "keywords": [
+    "security",
+    "privacy",
+    "cryptography",
+    "zero-knowledge",
+    "passwords",
+    "breach-checking",
+    "rfc"
+  ],
+  "author": "Credential Shield Protocol Working Group",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IAmAxolotl-04/password-smoke-detector.git"
+  }
+}
