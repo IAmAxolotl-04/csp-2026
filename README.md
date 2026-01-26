@@ -64,7 +64,7 @@ The protocol is designed for integration. Explore the reference implementations:
 
 
 Our first working demo, built in 24 hours, proved the core "server-blind" concept. You can try it here:
-Live Demo
+Live Demo: https://iamaxolotl-04.github.io/password-smoke-detector/
 
 *Note: This demo uses a simulated breach database. A production system connects to extensive, updated breach data.
 
