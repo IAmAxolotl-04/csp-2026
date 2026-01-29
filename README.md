@@ -1,6 +1,14 @@
 ## Credential Shield Protocol (CSP): An Open-Source, Server-Blind Protocol for Continuous Password Audits
 
 
+
+## Status: Under Active Cryptographic Review. This draft spec is a starting point. Major feedback from the community is leading to a significant v2 redesign focused on practical risk scoring over hard equivalence. Contributions welcome.
+
+
+
+
+
+
 ## Executive Summary
 
 
