@@ -1,27 +1,104 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSP‑V2: Nexus Audit Simulator</title>
-  <link rel="stylesheet" href="css/nexus.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>NEXUS AUDIT | Mechanical Credential Shield</title>
+    <link rel="stylesheet" href="css/nexus.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div id="app">
 
-    <div id="title-sequence" class="section"></div>
-    <div id="principle" class="section"></div>
-    <div id="server" class="section"></div>
-    <div id="client" class="section"></div>
-    <div id="privacy" class="section"></div>
-    <div id="transmission" class="section"></div>
-    <div id="server-process" class="section"></div>
-    <div id="risk-matrix" class="section"></div>
-    <div id="summary" class="section"></div>
-    <div id="closing" class="section"></div>
+<header class="header">
+    <div class="logo-container">
+        <div class="logo-glow"></div>
+        <div class="logo">NEXUS<span class="accent">AUDIT</span></div>
+        <div class="logo-subtitle">Mechanical Credential Shield</div>
+    </div>
+    <nav class="nav">
+        <a href="index.html" class="nav-link active">Simulation</a>
+        <a href="protocol.html" class="nav-link">Protocol</a>
+        <a href="docs.html" class="nav-link">Docs</a>
+        <a href="#" class="nav-link" title="Mechanical Repository">GitHub</a>
+    </nav>
+</header>
 
-  </div>
+<main class="main-grid">
+    <section class="panel terminal-panel">
+        <div class="panel-header">
+            <h2><span class="panel-icon">⚙️</span> Audit Terminal</h2>
+            <div class="panel-status" id="terminalStatus">READY</div>
+        </div>
+        <div id="terminal" class="terminal">
+            <div class="terminal-line">› Mechanical Console Online</div>
+            <div class="terminal-line">› Steam pressure: NOMINAL</div>
+            <div class="terminal-line">› Brass nodes: ALIGNED</div>
+            <div class="terminal-line">› Type "audit" or press LAUNCH</div>
+            <div class="terminal-line terminal-cursor">█</div>
+        </div>
+        <div class="controls">
+            <button class="btn btn-primary" onclick="startFullDemo()">
+                <span class="btn-icon">▶</span> LAUNCH AUDIT
+            </button>
+            <button class="btn btn-secondary" onclick="stepDemo()">
+                <span class="btn-icon">⏭</span> STEP
+            </button>
+            <button class="btn btn-ghost" onclick="resetDemo()">
+                <span class="btn-icon">↻</span> RESET
+            </button>
+            <div class="control-hint">
+                <kbd>Ctrl</kbd> + <kbd>Enter</kbd> Start | <kbd>Space</kbd> Step | <kbd>Esc</kbd> Reset
+            </div>
+        </div>
+    </section>
 
-  <script src="js/demo.js"></script>
+    <section class="panel mechanica-panel">
+        <div class="panel-header">
+            <h2><span class="panel-icon">🔧</span> Mechanica Engine</h2>
+            <div class="engine-rpm" id="engineRPM">0 RPM</div>
+        </div>
+        
+        <div class="canvas-container">
+            <div class="canvas-wrapper">
+                <canvas id="gearsCanvas" width="320" height="240"></canvas>
+                <div class="canvas-label">Primary Drive Gears</div>
+            </div>
+            
+            <div class="canvas-wrapper">
+                <canvas id="axolotlCanvas" width="200" height="200"></canvas>
+                <div class="canvas-label">Axolotl Regulator</div>
+            </div>
+        </div>
+        
+        <div class="engine-metrics">
+            <div class="metric">
+                <span class="metric-label">Steam Pressure</span>
+                <span class="metric-value" id="steamPressure">220 PSI</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Torque</span>
+                <span class="metric-value" id="torque">145 N·m</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Temperature</span>
+                <span class="metric-value" id="temperature">187°C</span>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="footer-content">
+        <span class="footer-brand">CSP‑V2 • Brass & Binary</span>
+        <span class="footer-divider">|</span>
+        <span class="footer-build">Build 2026.01.30</span>
+        <span class="footer-divider">|</span>
+        <span class="footer-status">Status: <span class="status-active">OPERATIONAL</span></span>
+    </div>
+</footer>
+
+<script src="js/nexus.js"></script>
 </body>
 </html>
