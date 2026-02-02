@@ -91,6 +91,24 @@ Q3 2025: Integration guides for major identity providers (Entra ID, Okta plugins
  Long-term: Community adoption as the standard method for private credential audits.
 
 
+## ⚠️ Critical Context: What CSP Is NOT
+To prevent misuse and false confidence, it is crucial to understand CSP's scope and limitations.
+
+**CSP is:**
+* A **credential hygiene signal** for detecting known-password exposure.
+* A **privacy-preserving protocol** for continuous breach monitoring.
+* An **enabler for password-to-passkey migration strategies**.
+
+**CSP is NOT:**
+* **An authentication mechanism** – It does not verify user identity.
+* **Phishing protection** – It cannot prevent credential theft.
+* **A silver bullet** – It addresses one specific risk among many.
+* **A replacement for MFA, passkeys, or device trust** – It complements them.
+
+
+> **Core Security Principle:** CSP reduces one specific risk signal. It does not authenticate users.
+
+
 ## Contributing & Feedback
 
 
